@@ -44,6 +44,9 @@ export class Dependency implements DependencyInterface {
       fill: process.env.LOGO_FILL || '#555',
       stroke: process.env.LOGO_STROKE || '',
       font: process.env.LOGO_FONT || 'IBMPlexSans-SemiBold.otf',
+      darkFill: process.env.LOGO_DARK_FILL || '#ddd',
+      darkStroke: process.env.LOGO_DARK_STROKE || '',
+      colorTheme: 'light',
     }
 
     this.markDefaults = {

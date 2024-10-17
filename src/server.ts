@@ -3,7 +3,7 @@ import Sharp from 'sharp'
 import Svgson from 'svgson'
 
 import { Dependency } from './dependency.js'
-import { DependencyInterface, SvgImage } from './types.js'
+import { ColorTheme, DependencyInterface, SvgImage } from './types.js'
 import { createInlineSvgImage } from './inline.js'
 import { createRectSvgImage } from './rect.js'
 import { createIconSvgImage } from './icon.js'
@@ -18,11 +18,13 @@ interface CommonQuery {
 
 interface InlineQuery extends CommonQuery {
   width?: string
+  colorTheme?: ColorTheme
 }
 
 interface RectQuery extends CommonQuery {
   width?: string
   height?: string
+  colorTheme?: ColorTheme
 }
 
 interface IconQuery extends CommonQuery {
@@ -71,12 +73,13 @@ export function createServer(dep: DependencyInterface) {
 
   server.get<{ Params: ImageParams; Querystring: InlineQuery }>('/v2/inline.:format', async (request, reply) => {
     const { format } = request.params
-    const { seed, width } = request.query
+    const { seed, width, colorTheme } = request.query
 
     const svgImage = await createInlineSvgImage(
       {
         seed: seed || dep.defaults.seed,
         width: Number(width || dep.inlineDefaults.width),
+        colorTheme: colorTheme || dep.logoTextDefaults.colorTheme,
       },
       dep,
     )
@@ -86,13 +89,14 @@ export function createServer(dep: DependencyInterface) {
 
   server.get<{ Params: ImageParams; Querystring: RectQuery }>('/v2/rect.:format', async (request, reply) => {
     const { format } = request.params
-    const { seed, width, height } = request.query
+    const { seed, width, height, colorTheme } = request.query
 
     const svgImage = await createRectSvgImage(
       {
         seed: seed || dep.defaults.seed,
         width: Number(width || dep.rectDefaults.size),
         height: Number(height || width || dep.rectDefaults.size),
+        colorTheme: colorTheme || dep.logoTextDefaults.colorTheme,
       },
       dep,
     )

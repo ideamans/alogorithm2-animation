@@ -1,12 +1,13 @@
 import Svgson from 'svgson'
 
-import { DependencyInterface, SvgImage } from './types.js'
+import { ColorTheme, DependencyInterface, SvgImage } from './types.js'
 import { scaledTextSvg, textToSvg } from './text.js'
 import { createMarkSvgImage } from './mark.js'
 
 export interface InlineSvgImageInput {
   seed: string
   width: number
+  colorTheme: ColorTheme
 }
 
 export async function createInlineSvgImage(
@@ -18,6 +19,8 @@ export async function createInlineSvgImage(
   // Text
   const textSvg = await textToSvg({
     ...dep.logoTextDefaults,
+    fill: input.colorTheme === 'dark' ? dep.logoTextDefaults.darkFill : dep.logoTextDefaults.fill,
+    stroke: input.colorTheme === 'dark' ? dep.logoTextDefaults.darkStroke : dep.logoTextDefaults.stroke,
     fontSize: 20, // Text will be scaled later so any value is fine
   })
 

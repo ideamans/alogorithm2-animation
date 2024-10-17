@@ -12,6 +12,9 @@ export interface LogoTextDefaults {
   fill: string
   stroke: string
   font: string
+  darkFill: string
+  darkStroke: string
+  colorTheme: ColorTheme
 }
 
 export interface MarkDefaults {
@@ -50,3 +53,5 @@ export interface SvgImage {
   width: number
   height: number
 }
+
+export type ColorTheme = 'light' | 'dark'
