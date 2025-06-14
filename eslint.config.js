@@ -5,14 +5,17 @@ import importPlugin from 'eslint-plugin-import'
 
 export default [
   {
-    files: ['src/**/*.ts'],
-    ignores: ['node_modules', 'build', 'coverage'],
+    files: ['src/**/*.ts', 'src/**/*.tsx'],
+    ignores: ['node_modules', 'build', 'dist', 'coverage'],
     languageOptions: {
       parser: tsParser,
       parserOptions: {
         ecmaVersion: 'latest',
         sourceType: 'module',
         project: './tsconfig.json',
+        ecmaFeatures: {
+          jsx: true,
+        },
       },
     },
     plugins: {
