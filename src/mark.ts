@@ -1,6 +1,6 @@
 import Blobs2 from 'blobs/v2/index.js'
 import Trianglify from 'trianglify'
-import Svgson from 'svgson'
+import { parse as svgsonParse } from 'svgson'
 
 import { DependencyInterface, SvgImage } from './types.js'
 import { scaleSvgPath } from './svg.js'
@@ -25,7 +25,9 @@ export async function createMarkSvgImage(
     cellSize: spec.width * dep.markDefaults.cellSizeRatio,
     seed,
   })
-  const trianglifySvg = await Svgson.parse(trianglify.toSVG().toString())
+  const trianglifySvgElement = trianglify.toSVG()
+  const trianglifySvgString = new XMLSerializer().serializeToString(trianglifySvgElement)
+  const trianglifySvg = await svgsonParse(trianglifySvgString)
 
   // Blob clipping path
   const blobPath = Blobs2.svgPath({
@@ -38,7 +40,7 @@ export async function createMarkSvgImage(
 
   const intWidth = Math.ceil(spec.width)
   const intHeight = Math.ceil(spec.height)
-  const markSvg: Svgson.INode = {
+  const markSvg = {
     name: 'svg',
     type: 'element',
     attributes: {
