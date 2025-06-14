@@ -1,9 +1,5 @@
-export * from './dependency.js'
-export * from './icon.js'
-export * from './inline.js'
-export * from './mark.js'
-export * from './rect.js'
-export * from './server.js'
-export * from './svg.js'
-export * from './text.js'
-export * from './types.js'
+// Export all animation utilities
+export * from './animation'
+
+// Export type definitions
+export type { Alogorithm2AnimationProps } from './react'

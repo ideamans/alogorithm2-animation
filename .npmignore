@@ -1,0 +1,60 @@
+# Development files
+dev/
+src/
+test/
+coverage/
+.nyc_output/
+
+# Configuration files
+.eslintrc*
+.prettierrc*
+.gitignore
+.editorconfig
+.nvmrc
+tsconfig.json
+tsconfig.build.json
+vite.*.config.ts
+vitest.*.config.ts
+cspell.json
+ava.config.*
+
+# Build files
+tmp/
+*.log
+*.tsbuildinfo
+
+# CI/CD
+.github/
+.circleci/
+
+# Documentation source
+docs/
+*.md
+!README.md
+
+# Test files
+**/__tests__/
+**/*.test.ts
+**/*.test.tsx
+**/*.spec.ts
+**/*.spec.tsx
+
+# Scripts
+scripts/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Astro build artifacts
+.astro/
+
+# Lock files (consumers should use their own)
+yarn.lock
+package-lock.json
+pnpm-lock.yaml
+
+# Source maps (optional, remove if you want to include them)
+# *.map

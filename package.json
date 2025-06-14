@@ -1,16 +1,60 @@
 {
-  "name": "alogorithm2",
-  "description": "ideaman's Inc logo mark generator v2.",
+  "name": "alogorithm2-animation",
+  "description": "Animated logo mark generator with morphing triangles and blobs",
   "version": "2.1.0",
   "type": "module",
-  "typings": "build/index.d.ts",
-  "module": "build/index.js",
-  "license": "MIT",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "license": "GPL-3.0",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./react": {
+      "types": "./dist/react/index.d.ts",
+      "import": "./dist/react/index.js"
+    },
+    "./vue": {
+      "types": "./dist/vue/index.d.ts",
+      "import": "./dist/vue/index.js"
+    },
+    "./astro": {
+      "types": "./dist/astro/index.d.ts",
+      "import": "./dist/astro/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "engines": {
-    "node": ">=20"
+    "node": ">=18"
+  },
+  "peerDependencies": {
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0",
+    "vue": ">=3.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    },
+    "vue": {
+      "optional": true
+    }
   },
   "scripts": {
-    "build": "tsc",
+    "build": "run-s build:clean build:compile build:copy",
+    "build:clean": "rm -rf dist",
+    "build:compile": "tsc -p tsconfig.build.json",
+    "build:copy": "node scripts/copy-files.js",
+    "prepublishOnly": "run-s test build",
     "fix": "run-s fix:*",
     "fix:lint": "eslint --fix",
     "fix:prettier": "prettier --write src",
