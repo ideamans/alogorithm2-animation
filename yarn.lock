@@ -5821,9 +5821,9 @@ tr46@~0.0.3:
   integrity sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==
 
 trianglify-ts-no-canvas@^4.2.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/trianglify-ts-no-canvas/-/trianglify-ts-no-canvas-4.2.0.tgz#bed88f41bd9a6b1604b6265894faa727ea13d6ff"
-  integrity sha512-plouxPvugvwkKq6/wfqDAWf3KnbADgEdTYV7/GTHSgPKJ8ax4vU3PnWNTT44DTPQno6At18r5rWZAF4EM2HQtQ==
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/trianglify-ts-no-canvas/-/trianglify-ts-no-canvas-4.2.2.tgz#b8162f8cfc89cd2ab9660adbc25a2882b1e53625"
+  integrity sha512-dEVdEI+xnaqWdwiHOuULBuPCZhYdp5uoN2rZPwOKl5zaDFtrwMa8MSeMZX/fBecbkx/LCSASyI9oFyErsvzrTQ==
   dependencies:
     chroma-js "^2.1.0"
     delaunator "^4.0.1"

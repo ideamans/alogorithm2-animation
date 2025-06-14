@@ -210,36 +210,75 @@ export function generateTriangles(seed: string, size: number, animationMode: 'fl
     seed: fullSeed,
   })
 
-  const svg = pattern.toSVG()
-  const paths = svg.querySelectorAll('path')
   const triangles: Triangle[] = []
 
-  paths.forEach((path) => {
-    const d = path.getAttribute('d')
-    const fill = path.getAttribute('fill')
+  // Use polys array directly if available
+  if (pattern.polys && pattern.polys.length > 0) {
+    // Get points array for vertex lookup
+    const points = pattern.points || []
+    
+    pattern.polys.forEach((poly) => {
+      if (poly.vertexIndices && poly.vertexIndices.length === 3) {
+        const trianglePoints = poly.vertexIndices.map(idx => ({
+          x: points[idx][0],
+          y: points[idx][1]
+        }))
 
-    if (d && fill) {
-      const matches = d.match(
-        /M\s*(-?[\d.]+)\s*,\s*(-?[\d.]+)\s*L\s*(-?[\d.]+)\s*,\s*(-?[\d.]+)\s*L\s*(-?[\d.]+)\s*,\s*(-?[\d.]+)\s*Z?/,
-      )
-
-      if (matches && matches.length >= 7) {
-        const points = [
-          { x: parseFloat(matches[1]), y: parseFloat(matches[2]) },
-          { x: parseFloat(matches[3]), y: parseFloat(matches[4]) },
-          { x: parseFloat(matches[5]), y: parseFloat(matches[6]) },
-        ]
-
-        const centroid = {
-          x: (points[0].x + points[1].x + points[2].x) / 3,
-          y: (points[0].y + points[1].y + points[2].y) / 3,
+        const centroid = poly.centroid || {
+          x: (trianglePoints[0].x + trianglePoints[1].x + trianglePoints[2].x) / 3,
+          y: (trianglePoints[0].y + trianglePoints[1].y + trianglePoints[2].y) / 3,
         }
 
-        const color = convertRGBtoHSL(fill)
-        triangles.push({ points, color, centroid })
+        // Extract color - handle different color formats
+        let color = '#888888' // default gray
+        if (poly.color) {
+          if (typeof poly.color === 'string') {
+            color = poly.color
+          } else if ('_rgb' in poly.color && Array.isArray(poly.color._rgb)) {
+            const [r, g, b] = poly.color._rgb
+            color = `rgb(${Math.round(r)},${Math.round(g)},${Math.round(b)})`
+          }
+        }
+
+        triangles.push({ 
+          points: trianglePoints, 
+          color: convertRGBtoHSL(color), 
+          centroid 
+        })
       }
-    }
-  })
+    })
+  } else {
+    // Fallback to SVG parsing if polys not available
+    const svg = pattern.toSVG() as SVGSVGElement
+    const paths = svg.querySelectorAll('path')
+
+    paths.forEach((path: SVGPathElement) => {
+      const d = path.getAttribute('d')
+      const fill = path.getAttribute('fill')
+
+      if (d && fill) {
+        const matches = d.match(
+          /M\s*(-?[\d.]+)\s*,\s*(-?[\d.]+)\s*L\s*(-?[\d.]+)\s*,\s*(-?[\d.]+)\s*L\s*(-?[\d.]+)\s*,\s*(-?[\d.]+)\s*Z?/,
+        )
+
+        if (matches && matches.length >= 7) {
+          const points = [
+            { x: parseFloat(matches[1]), y: parseFloat(matches[2]) },
+            { x: parseFloat(matches[3]), y: parseFloat(matches[4]) },
+            { x: parseFloat(matches[5]), y: parseFloat(matches[6]) },
+          ]
+
+          const centroid = {
+            x: (points[0].x + points[1].x + points[2].x) / 3,
+            y: (points[0].y + points[1].y + points[2].y) / 3,
+          }
+
+          const color = convertRGBtoHSL(fill)
+          triangles.push({ points, color, centroid })
+        }
+      }
+    })
+  }
 
   // Sort triangles by position
   if (animationMode === 'morph') {

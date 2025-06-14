@@ -1,7 +1,7 @@
 {
   "name": "alogorithm2-animation",
   "description": "Animated logo mark generator with morphing triangles and blobs",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.js",
