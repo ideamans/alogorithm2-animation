@@ -1,5 +1,5 @@
 import Blobs2 from 'blobs/v2/index.js'
-import Trianglify from 'trianglify'
+import Trianglify from 'trianglify-ts-no-canvas'
 
 import { scaleSvgPath } from './svg'
 

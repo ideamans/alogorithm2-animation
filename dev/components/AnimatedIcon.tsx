@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { generateRandomSeed } from '../utils'
-import Trianglify from 'trianglify'
+import Trianglify from 'trianglify-ts-no-canvas'
 import Blobs2 from 'blobs/v2/index.js'
 import { scaleSvgPath } from '../../src/svg'
 
@@ -586,7 +586,6 @@ export const AnimatedIcon: React.FC<AnimatedIconProps> = ({
           }
         }
       })
-
 
       morphState.fromTriangles.forEach((fromTriangle) => {
         if (fromTriangle.vertexIndices && fromTriangle.vertexIndices.length === 3) {
