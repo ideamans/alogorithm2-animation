@@ -1,5 +1,6 @@
-import Trianglify from 'trianglify'
 import Blobs2 from 'blobs/v2/index.js'
+import Trianglify from 'trianglify'
+
 import { scaleSvgPath } from './svg'
 
 export interface AnimationOptions {
@@ -271,23 +272,30 @@ export function generateTriangles(seed: string, size: number, animationMode: 'fl
   } else {
     const gridSize = 50
     triangles.sort((a, b) => {
-      const aGridY = Math.floor((a as any).centroid.y / gridSize)
-      const bGridY = Math.floor((b as any).centroid.y / gridSize)
+      const aCentroid = a.centroid!
+      const bCentroid = b.centroid!
+
+      const aGridY = Math.floor(aCentroid.y / gridSize)
+      const bGridY = Math.floor(bCentroid.y / gridSize)
 
       if (aGridY !== bGridY) return aGridY - bGridY
 
-      const aGridX = Math.floor((a as any).centroid.x / gridSize)
-      const bGridX = Math.floor((b as any).centroid.x / gridSize)
+      const aGridX = Math.floor(aCentroid.x / gridSize)
+      const bGridX = Math.floor(bCentroid.x / gridSize)
 
       if (aGridX !== bGridX) return aGridX - bGridX
 
-      const yDiff = (a as any).centroid.y - (b as any).centroid.y
+      const yDiff = aCentroid.y - bCentroid.y
       if (Math.abs(yDiff) > 0.1) return yDiff
-      return (a as any).centroid.x - (b as any).centroid.x
+      return aCentroid.x - bCentroid.x
     })
   }
 
-  return triangles.map(({ centroid, ...triangle }) => triangle)
+  // Remove centroid property from triangles before returning
+  return triangles.map((triangle) => ({
+    points: triangle.points,
+    color: triangle.color,
+  }))
 }
 
 // Generate blob path
