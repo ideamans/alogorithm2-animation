@@ -31,4 +31,11 @@ export default [
       'sort-imports': ['error', { ignoreDeclarationSort: true, ignoreCase: true }],
     },
   },
+  {
+    // Rules for test files
+    files: ['src/**/*.test.ts', 'src/**/*.test.tsx'],
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'off',
+    },
+  },
 ]

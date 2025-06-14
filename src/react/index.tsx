@@ -1,17 +1,18 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+
 import {
-  MorphState,
-  Triangle,
-  Point,
+  easeInOutSine,
+  extractVertices,
+  generateBlobPath,
   generateRandomSeed,
   generateTriangles,
-  generateBlobPath,
-  extractVertices,
-  matchVertices,
-  easeInOutSine,
-  interpolateNumber,
   interpolateColor,
+  interpolateNumber,
   interpolatePath,
+  matchVertices,
+  MorphState,
+  Point,
+  Triangle,
 } from '../animation'
 
 export interface Alogorithm2AnimationProps {
