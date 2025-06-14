@@ -3,6 +3,7 @@
 build
 node_modules
 test
+!test/setup.ts
 src/**.js
 coverage
 *.log
