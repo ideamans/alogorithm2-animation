@@ -64,24 +64,24 @@ function App() {
 
       <div className="icons-wrapper">
         <div className="icon-container">
-          <h3>Flying Animation</h3>
+          <h3>Fly Mode</h3>
           <AnimatedIcon 
             seed={currentSeed} 
             size={300} 
             autoAnimate={autoAnimate}
             animationInterval={4000}
-            animation="flying"
+            mode="fly"
             manualProgress={manualProgress}
           />
         </div>
         <div className="icon-container">
-          <h3>Morph Animation</h3>
+          <h3>Morph Mode</h3>
           <AnimatedIcon 
             seed={currentSeed} 
             size={300} 
             autoAnimate={autoAnimate}
             animationInterval={4000}
-            animation="morph"
+            mode="morph"
             manualProgress={manualProgress}
           />
         </div>

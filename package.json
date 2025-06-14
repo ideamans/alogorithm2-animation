@@ -21,9 +21,15 @@
     "test:unit": "nyc --silent ava",
     "watch": "nyc --silent ava --watch",
     "start": "run-s build && node build/start.js",
-    "dev": "vite --config vite.config.ts dev"
+    "dev": "vite --config vite.config.ts dev",
+    "dev:react": "vite --config vite.react.config.ts",
+    "test:react": "vitest run src/react/__tests__",
+    "test:react:watch": "vitest watch src/react/__tests__"
   },
   "devDependencies": {
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
     "@types/node": "^22.7.5",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
@@ -33,6 +39,7 @@
     "@typescript-eslint/eslint-plugin": "^8.8.0",
     "@typescript-eslint/parser": "^8.8.0",
     "@vitejs/plugin-react": "^4.5.2",
+    "@vitest/ui": "^3.2.3",
     "ava": "^6.1.3",
     "cspell": "^8.14.4",
     "eslint": "^9.12.0",
@@ -40,6 +47,7 @@
     "eslint-plugin-eslint-comments": "^3.2.0",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-unused-imports": "^4.1.4",
+    "jsdom": "^26.1.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^3.3.3",
     "react": "^19.1.0",
@@ -47,7 +55,8 @@
     "standard-version": "^9.5.0",
     "tsx": "^4.19.1",
     "typescript": "^5.6.2",
-    "vite": "^6.3.5"
+    "vite": "^6.3.5",
+    "vitest": "^3.2.3"
   },
   "dependencies": {
     "blobs": "^2.3.0-beta.2",
