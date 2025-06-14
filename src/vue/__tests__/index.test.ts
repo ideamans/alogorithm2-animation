@@ -1,6 +1,7 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { mount } from '@vue/test-utils'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
+
 import Alogorithm2Animation from '../index.vue'
 
 // Mock the animation module
@@ -21,19 +22,19 @@ vi.mock('../../animation', () => ({
           points: [
             { x: 0, y: 0 },
             { x: 50, y: 0 },
-            { x: 25, y: 50 }
+            { x: 25, y: 50 },
           ],
           color: '#ff0000',
-          opacity: 1
+          opacity: 1,
         },
         {
           points: [
             { x: 100, y: 0 },
             { x: 150, y: 0 },
-            { x: 125, y: 50 }
+            { x: 125, y: 50 },
           ],
           color: '#00ff00',
-          opacity: 1
+          opacity: 1,
         },
       ]
     }
@@ -44,31 +45,31 @@ vi.mock('../../animation', () => ({
       { x: 50, y: 100, fill: '#0000ff', stroke: '#0000ff', opacity: 1 },
     ]
   }),
-  generateBlobPath: vi.fn((seed, size) => 'M100,50 Q150,100 100,150 Q50,100 100,50'),
+  generateBlobPath: vi.fn(() => 'M100,50 Q150,100 100,150 Q50,100 100,50'),
   extractVertices: vi.fn((triangles) => ({
-    vertices: triangles.map(t => ({ x: t.x, y: t.y })),
-    triangles: triangles.map((t, i) => ({
+    vertices: triangles.map((t: any) => ({ x: t.x, y: t.y })),
+    triangles: triangles.map((t: any, i: number) => ({
       points: [
         { x: t.x, y: t.y },
         { x: (t.x + 10) % 100, y: t.y },
-        { x: t.x, y: (t.y + 10) % 100 }
+        { x: t.x, y: (t.y + 10) % 100 },
       ],
       color: t.fill,
       opacity: t.opacity || 1,
-      vertexIndices: [i, (i + 1) % 3, (i + 2) % 3]
-    }))
+      vertexIndices: [i, (i + 1) % 3, (i + 2) % 3],
+    })),
   })),
-  matchVertices: vi.fn((fromVerts, toVerts) => fromVerts.map((_, i) => i)),
+  matchVertices: vi.fn((fromVerts) => fromVerts.map((_: any, i: number) => i)),
   easeInOutSine: vi.fn((t) => t),
   interpolateNumber: vi.fn((from, to, progress) => from + (to - from) * progress),
-  interpolateColor: vi.fn((from, to, progress) => from),
-  interpolatePath: vi.fn((from, to, progress) => from),
-  createInterpolatedTriangles: vi.fn((from, to, progress) => 
-    from.map((f, i) => ({
+  interpolateColor: vi.fn((from) => from),
+  interpolatePath: vi.fn((from) => from),
+  createInterpolatedTriangles: vi.fn((from: any, to: any, progress: number) =>
+    from.map((f: any, i: number) => ({
       ...f,
       x: f.x + (to[i].x - f.x) * progress,
       y: f.y + (to[i].y - f.y) * progress,
-    }))
+    })),
   ),
 }))
 
@@ -83,13 +84,13 @@ describe('Alogorithm2Animation Vue Component', () => {
     vi.useFakeTimers()
     rafCallbacks = []
     rafId = 0
-    
+
     requestAnimationFrameSpy = vi.spyOn(window, 'requestAnimationFrame').mockImplementation((callback) => {
       const id = ++rafId
       rafCallbacks.push(callback)
       return id
     })
-    
+
     cancelAnimationFrameSpy = vi.spyOn(window, 'cancelAnimationFrame').mockImplementation(() => {})
   })
 
@@ -102,7 +103,7 @@ describe('Alogorithm2Animation Vue Component', () => {
   const flushAnimationFrames = (time: number = 0) => {
     const callbacks = [...rafCallbacks]
     rafCallbacks = []
-    callbacks.forEach(cb => cb(time))
+    callbacks.forEach((cb) => cb(time))
   }
 
   it('renders SVG with correct dimensions', () => {
@@ -147,7 +148,7 @@ describe('Alogorithm2Animation Vue Component', () => {
     await nextTick()
 
     const paths = wrapper.findAll('path')
-    const blobPath = paths.find(p => p.attributes('d')?.includes('M'))
+    const blobPath = paths.find((p) => p.attributes('d')?.includes('M'))
     expect(blobPath).toBeDefined()
   })
 
@@ -202,14 +203,14 @@ describe('Alogorithm2Animation Vue Component', () => {
 
     // During morph, we should see both triangle sets with different opacities
     const polygons = wrapper.findAll('polygon')
-    const opacities = polygons.map(p => p.attributes('opacity'))
-    
+    const opacities = polygons.map((p) => p.attributes('opacity'))
+
     // Should have triangles with opacity values
     expect(opacities.length).toBeGreaterThan(0)
   })
 
   it('respects custom seed prop', async () => {
-    const wrapper = mount(Alogorithm2Animation, {
+    mount(Alogorithm2Animation, {
       props: {
         width: 300,
         height: 300,
@@ -220,11 +221,7 @@ describe('Alogorithm2Animation Vue Component', () => {
     await nextTick()
 
     const { generateTriangles } = await import('../../animation')
-    expect(generateTriangles).toHaveBeenCalledWith(
-      'custom-seed',
-      300,
-      'morph'
-    )
+    expect(generateTriangles).toHaveBeenCalledWith('custom-seed', 300, 'morph')
   })
 
   it('cleans up animation on unmount', async () => {
@@ -252,7 +249,7 @@ describe('Alogorithm2Animation Vue Component', () => {
   })
 
   it('handles interval prop correctly', async () => {
-    const wrapper = mount(Alogorithm2Animation, {
+    mount(Alogorithm2Animation, {
       props: {
         width: 300,
         height: 300,
@@ -288,7 +285,7 @@ describe('Alogorithm2Animation Vue Component', () => {
   })
 
   it('updates blob path during animation', async () => {
-    const wrapper = mount(Alogorithm2Animation, {
+    mount(Alogorithm2Animation, {
       props: {
         width: 300,
         height: 300,
@@ -300,7 +297,7 @@ describe('Alogorithm2Animation Vue Component', () => {
     await nextTick()
 
     const { generateBlobPath } = await import('../../animation')
-    
+
     // Initial blob
     expect(generateBlobPath).toHaveBeenCalled()
     const initialCallCount = (generateBlobPath as any).mock.calls.length
@@ -343,8 +340,8 @@ describe('Alogorithm2Animation Vue Component', () => {
     await nextTick()
 
     let polygons = wrapper.findAll('polygon')
-    let opacities = polygons.map(p => parseFloat(p.attributes('opacity') || '1'))
-    
+    let opacities = polygons.map((p) => parseFloat(p.attributes('opacity') || '1'))
+
     // Some triangles should have opacity 0.75 (from) and some 0.25 (to)
     expect(opacities.length).toBeGreaterThan(0)
 
@@ -353,8 +350,8 @@ describe('Alogorithm2Animation Vue Component', () => {
     await nextTick()
 
     polygons = wrapper.findAll('polygon')
-    opacities = polygons.map(p => parseFloat(p.attributes('opacity') || '1'))
-    
+    opacities = polygons.map((p) => parseFloat(p.attributes('opacity') || '1'))
+
     // Some triangles should have opacity 0.25 (from) and some 0.75 (to)
     expect(opacities.length).toBeGreaterThan(0)
   })

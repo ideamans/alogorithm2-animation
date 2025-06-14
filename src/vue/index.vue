@@ -1,10 +1,5 @@
 <template>
-  <svg
-    :width="width"
-    :height="height"
-    :viewBox="`0 0 ${size} ${size}`"
-    xmlns="http://www.w3.org/2000/svg"
-  >
+  <svg :width="width" :height="height" :viewBox="`0 0 ${size} ${size}`" xmlns="http://www.w3.org/2000/svg">
     <defs>
       <clipPath id="alogorithm2-clip">
         <path :d="interpolatedBlobPath" />
@@ -14,7 +9,7 @@
       <polygon
         v-for="(triangle, index) in interpolatedTriangles"
         :key="index"
-        :points="triangle.points.map(p => `${p.x},${p.y}`).join(' ')"
+        :points="triangle.points.map((p) => `${p.x},${p.y}`).join(' ')"
         :fill="triangle.color"
         :opacity="triangle.opacity || 1"
       />
@@ -190,14 +185,21 @@ export default defineComponent({
       const fromCount = morphState.value.fromTriangles.length
       const toCount = morphState.value.toTriangles.length
 
-      if (props.mode === 'morph' && morphState.value.fromVertices && morphState.value.toVertices && morphState.value.vertexMatches) {
+      if (
+        props.mode === 'morph' &&
+        morphState.value.fromVertices &&
+        morphState.value.toVertices &&
+        morphState.value.vertexMatches
+      ) {
         const fromOpacity = 1 - easedProgress
         const toOpacity = easedProgress
 
         if (morphState.value.progress <= 0) {
           morphState.value.fromTriangles.forEach((triangle) => {
             if (triangle.vertexIndices && triangle.vertexIndices.length === 3) {
-              const points = triangle.vertexIndices.map((vIdx) => morphState.value!.fromVertices![vIdx] || { x: 0, y: 0 })
+              const points = triangle.vertexIndices.map(
+                (vIdx) => morphState.value!.fromVertices![vIdx] || { x: 0, y: 0 },
+              )
               triangles.push({
                 points,
                 color: triangle.color,
@@ -465,22 +467,28 @@ export default defineComponent({
     })
 
     // Watch for prop changes
-    watch(() => [props.seed, props.width, props.height, props.mode], () => {
-      initializeMorph()
-    })
+    watch(
+      () => [props.seed, props.width, props.height, props.mode],
+      () => {
+        initializeMorph()
+      },
+    )
 
     // Animation control
-    watch(() => morphState.value?.progress, () => {
-      if (morphState.value && morphState.value.progress < 1) {
-        lastTime = 0
-        animationFrameId = requestAnimationFrame(animate)
-      }
-    })
+    watch(
+      () => morphState.value?.progress,
+      () => {
+        if (morphState.value && morphState.value.progress < 1) {
+          lastTime = 0
+          animationFrameId = requestAnimationFrame(animate)
+        }
+      },
+    )
 
     // Lifecycle
     onMounted(() => {
       initializeMorph()
-      
+
       intervalId = setInterval(() => {
         if (morphState.value && morphState.value.progress >= 1) {
           startNewMorph()

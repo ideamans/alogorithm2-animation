@@ -1,0 +1,22 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "words": [
+    "Alogorithm",
+    "alogorithm",
+    "crossfade",
+    "ideaman",
+    "ideaman's",
+    "pathdata",
+    "Verts"
+  ],
+  "ignorePaths": [
+    "node_modules",
+    "dist",
+    "build",
+    "coverage",
+    ".git",
+    "yarn.lock",
+    "package-lock.json"
+  ]
+}

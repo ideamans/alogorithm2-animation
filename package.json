@@ -58,7 +58,7 @@
     "test": "run-s test:lint test:prettier test:cspell test:react test:vue",
     "test:lint": "eslint src",
     "test:prettier": "prettier src --list-different",
-    "test:cspell": "cspell \"{README.md,README.ja.md,.github/*.md,src/**/*.ts}\"",
+    "test:cspell": "cspell --config ./cspell.json \"{README.md,README.ja.md,.github/*.md,src/**/*.ts}\"",
     "dev": "vite --config vite.config.ts dev",
     "dev:react": "vite --config vite.react.config.ts",
     "dev:vue": "vite --config vite.vue.config.ts",
