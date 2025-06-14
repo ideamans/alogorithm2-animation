@@ -10,3 +10,7 @@ package-lock.json
 tmp
 
 tsconfig.tsbuildinfo
+
+# Astro build artifacts
+.astro/
+dev/astro/.astro/

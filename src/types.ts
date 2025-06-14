@@ -1,10 +1,7 @@
-import Pino from 'pino'
 import Svgson from 'svgson'
 
 export interface Defaults {
   seed: string
-  serverPort: number
-  serverHost: string
 }
 
 export interface LogoTextDefaults {
@@ -39,7 +36,6 @@ export interface RectDefaults {
 }
 
 export interface DependencyInterface {
-  logger?: Pino.Logger
   defaults: Defaults
   logoTextDefaults: LogoTextDefaults
   markDefaults: MarkDefaults
