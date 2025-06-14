@@ -33,7 +33,7 @@ export const Alogorithm2Animation: React.FC<Alogorithm2AnimationProps> = ({
 }) => {
   const [morphState, setMorphState] = useState<MorphState | null>(null)
   const [isLoading, setIsLoading] = useState(true)
-  const animationFrameRef = useRef<number>()
+  const animationFrameRef = useRef<number>(0)
   const lastTimeRef = useRef<number>(0)
   const size = Math.min(width, height)
 

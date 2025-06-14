@@ -14,3 +14,5 @@ tsconfig.tsbuildinfo
 # Astro build artifacts
 .astro/
 dev/astro/.astro/
+
+dist
