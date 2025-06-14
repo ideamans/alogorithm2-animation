@@ -1,0 +1,65 @@
+---
+import { Alogorithm2Animation } from '../../../../src/react/index.tsx'
+import Layout from '../layouts/Layout.astro'
+---
+
+<Layout title="React Component in Astro">
+  <main>
+    <h1>React Component Test in Astro</h1>
+    
+    <div class="demos">
+      <div class="demo-item">
+        <h3>Morph Mode (Default)</h3>
+        <Alogorithm2Animation client:load width={300} height={300} mode="morph" />
+      </div>
+      
+      <div class="demo-item">
+        <h3>Fly Mode</h3>
+        <Alogorithm2Animation client:load width={300} height={300} mode="fly" />
+      </div>
+      
+      <div class="demo-item">
+        <h3>Custom Seed</h3>
+        <Alogorithm2Animation client:load width={300} height={300} seed="custom-seed" mode="morph" />
+      </div>
+      
+      <div class="demo-item">
+        <h3>Fast Animation</h3>
+        <Alogorithm2Animation client:load width={300} height={300} mode="morph" duration={500} interval={2000} />
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  main {
+    margin: auto;
+    padding: 1rem;
+    max-width: 1200px;
+  }
+  
+  h1 {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .demos {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .demo-item {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .demo-item h3 {
+    margin-top: 0;
+    color: #666;
+  }
+</style>
