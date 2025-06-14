@@ -220,8 +220,6 @@ export const AnimatedIcon: React.FC<AnimatedIconProps> = ({
 
     // Work directly with path elements
     const paths = svg.querySelectorAll('path')
-    console.log('Found paths:', paths.length)
-
     const triangles: Triangle[] = []
 
     // Parse path elements
@@ -313,10 +311,6 @@ export const AnimatedIcon: React.FC<AnimatedIconProps> = ({
 
     // Remove centroid from final data
     const finalTriangles = triangles.map(({ centroid, ...triangle }) => triangle)
-
-    console.log(`Generated ${finalTriangles.length} triangles from ${paths.length} paths`)
-
-    // For morph animation, we'll extract vertices later when setting up the morph
     return finalTriangles
   }
 
@@ -387,7 +381,6 @@ export const AnimatedIcon: React.FC<AnimatedIconProps> = ({
         const distance = Math.sqrt(Math.pow(fromVertex.x - toVertex.x, 2) + Math.pow(fromVertex.y - toVertex.y, 2))
 
         if (distance < bestDistance && distance < size * 0.5) {
-          // Increased threshold
           bestDistance = distance
           bestMatch = toIdx
         }
@@ -411,8 +404,6 @@ export const AnimatedIcon: React.FC<AnimatedIconProps> = ({
     const newBlobPath = generateBlobPath(newSeed)
 
     if (animation === 'morph' && morphState.toVertices && morphState.toTriangles) {
-      // Reuse the existing toTriangles and toVertices as the new fromTriangles and fromVertices
-      // But first update the triangle points to match the exact vertex positions
       const updatedFromTriangles = morphState.toTriangles.map((triangle) => {
         if (triangle.vertexIndices && triangle.vertexIndices.length === 3) {
           const points = triangle.vertexIndices.map((vIdx) => ({
@@ -431,9 +422,9 @@ export const AnimatedIcon: React.FC<AnimatedIconProps> = ({
       const vertexMatches = matchVertices(morphState.toVertices, newVertices)
 
       setMorphState({
-        fromTriangles: updatedFromTriangles, // Use triangles with updated points
+        fromTriangles: updatedFromTriangles,
         toTriangles: newTrianglesWithVertices,
-        fromVertices: morphState.toVertices, // Reuse existing vertices
+        fromVertices: morphState.toVertices,
         toVertices: newVertices,
         vertexMatches,
         fromBlobPath: morphState.toBlobPath,
@@ -528,17 +519,13 @@ export const AnimatedIcon: React.FC<AnimatedIconProps> = ({
   const interpolatedTriangles: Triangle[] = []
 
   if (animation === 'morph' && morphState.fromVertices && morphState.toVertices && morphState.vertexMatches) {
-    // Vertex-based morphing with crossfade
     const fromOpacity = 1 - easedProgress
     const toOpacity = easedProgress
 
-    // At progress 0, use exact fromVertices positions to avoid gaps
     if (morphState.progress <= 0) {
-      // Build triangles from source state with exact vertex positions
       morphState.fromTriangles.forEach((triangle) => {
         if (triangle.vertexIndices && triangle.vertexIndices.length === 3) {
           const points = triangle.vertexIndices.map((vIdx) => morphState.fromVertices![vIdx] || { x: 0, y: 0 })
-
           interpolatedTriangles.push({
             points,
             color: triangle.color,
@@ -547,11 +534,9 @@ export const AnimatedIcon: React.FC<AnimatedIconProps> = ({
         }
       })
     } else if (morphState.progress >= 1) {
-      // At progress 1, use exact toVertices positions
       morphState.toTriangles.forEach((triangle) => {
         if (triangle.vertexIndices && triangle.vertexIndices.length === 3) {
           const points = triangle.vertexIndices.map((vIdx) => morphState.toVertices![vIdx] || { x: 0, y: 0 })
-
           interpolatedTriangles.push({
             points,
             color: triangle.color,
@@ -560,28 +545,21 @@ export const AnimatedIcon: React.FC<AnimatedIconProps> = ({
         }
       })
     } else {
-      // During animation, render both triangle sets with crossfade
-
-      // First, interpolate vertices for smooth morphing
       const interpolatedVertices: Point[] = new Array(
         Math.max(morphState.fromVertices.length, morphState.toVertices.length),
       )
 
-      // Interpolate matched vertices
       morphState.vertexMatches.forEach(({ fromIdx, toIdx }) => {
         const fromVertex = morphState.fromVertices![fromIdx]
         const toVertex = morphState.toVertices![toIdx]
-
         interpolatedVertices[toIdx] = {
           x: interpolateNumber(fromVertex.x, toVertex.x, easedProgress),
           y: interpolateNumber(fromVertex.y, toVertex.y, easedProgress),
         }
       })
 
-      // Handle unmatched vertices in target (fade in from nearest matched vertex or edge)
       morphState.toVertices.forEach((vertex, idx) => {
         if (!interpolatedVertices[idx]) {
-          // Find nearest interpolated vertex
           let nearestDist = Infinity
           let nearestVertex = { x: size / 2, y: size / 2 }
 
@@ -598,7 +576,6 @@ export const AnimatedIcon: React.FC<AnimatedIconProps> = ({
             }
           })
 
-          // Start from nearest vertex instead of center
           interpolatedVertices[idx] = {
             x: interpolateNumber(nearestVertex.x, vertex.x, easedProgress),
             y: interpolateNumber(nearestVertex.y, vertex.y, easedProgress),
@@ -606,48 +583,12 @@ export const AnimatedIcon: React.FC<AnimatedIconProps> = ({
         }
       })
 
-      // Match triangles/paths for color interpolation
-      const pathMatches: Map<number, number> = new Map()
-      morphState.fromTriangles.forEach((fromTriangle, fromIdx) => {
-        const fromCentroid = {
-          x: (fromTriangle.points[0].x + fromTriangle.points[1].x + fromTriangle.points[2].x) / 3,
-          y: (fromTriangle.points[0].y + fromTriangle.points[1].y + fromTriangle.points[2].y) / 3,
-        }
 
-        let bestMatch = -1
-        let bestDistance = Infinity
-
-        morphState.toTriangles.forEach((toTriangle, toIdx) => {
-          if (pathMatches.has(toIdx)) return
-
-          const toCentroid = {
-            x: (toTriangle.points[0].x + toTriangle.points[1].x + toTriangle.points[2].x) / 3,
-            y: (toTriangle.points[0].y + toTriangle.points[1].y + toTriangle.points[2].y) / 3,
-          }
-
-          const distance = Math.sqrt(
-            Math.pow(fromCentroid.x - toCentroid.x, 2) + Math.pow(fromCentroid.y - toCentroid.y, 2),
-          )
-
-          if (distance < bestDistance) {
-            bestDistance = distance
-            bestMatch = toIdx
-          }
-        })
-
-        if (bestMatch !== -1 && bestDistance < size * 0.4) {
-          pathMatches.set(bestMatch, fromIdx)
-        }
-      })
-
-      // Render source triangles fading out
       morphState.fromTriangles.forEach((fromTriangle) => {
         if (fromTriangle.vertexIndices && fromTriangle.vertexIndices.length === 3) {
           const points = fromTriangle.vertexIndices.map((vIdx) => {
-            // For source triangles, use interpolated positions based on vertex matches
             const vertexMatch = morphState.vertexMatches!.find((m) => m.fromIdx === vIdx)
             if (vertexMatch) {
-              // This vertex has a match, interpolate it
               const fromVertex = morphState.fromVertices![vIdx]
               const toVertex = morphState.toVertices![vertexMatch.toIdx]
               return {
@@ -655,7 +596,6 @@ export const AnimatedIcon: React.FC<AnimatedIconProps> = ({
                 y: interpolateNumber(fromVertex.y, toVertex.y, easedProgress),
               }
             } else {
-              // Unmatched vertex - move towards centroid
               const fromVertex = morphState.fromVertices![vIdx]
               const centroid = {
                 x: (fromTriangle.points[0].x + fromTriangle.points[1].x + fromTriangle.points[2].x) / 3,
@@ -667,7 +607,6 @@ export const AnimatedIcon: React.FC<AnimatedIconProps> = ({
               }
             }
           })
-
           interpolatedTriangles.push({
             points,
             color: fromTriangle.color,
@@ -676,13 +615,11 @@ export const AnimatedIcon: React.FC<AnimatedIconProps> = ({
         }
       })
 
-      // Render target triangles fading in
       morphState.toTriangles.forEach((toTriangle) => {
         if (toTriangle.vertexIndices && toTriangle.vertexIndices.length === 3) {
           const points = toTriangle.vertexIndices.map((vIdx) => {
             const vertex = interpolatedVertices[vIdx]
             if (!vertex) {
-              // For unmatched vertices, start from centroid
               const toVertex = morphState.toVertices![vIdx]
               const centroid = {
                 x: (toTriangle.points[0].x + toTriangle.points[1].x + toTriangle.points[2].x) / 3,
@@ -695,7 +632,6 @@ export const AnimatedIcon: React.FC<AnimatedIconProps> = ({
             }
             return vertex
           })
-
           interpolatedTriangles.push({
             points,
             color: toTriangle.color,
@@ -705,7 +641,6 @@ export const AnimatedIcon: React.FC<AnimatedIconProps> = ({
       })
     }
   } else if (animation === 'morph') {
-    // Fallback to simple triangle matching if no vertices
     const triangleMatches: { fromIdx: number; toIdx: number }[] = []
     const matchedFrom = new Set<number>()
     const matchedTo = new Set<number>()
@@ -872,10 +807,6 @@ export const AnimatedIcon: React.FC<AnimatedIconProps> = ({
           ))}
         </g>
       </svg>
-      <div style={{ marginTop: '1rem', fontSize: '0.9rem', color: '#666' }}>
-        Progress: {Math.round(morphState.progress * 100)}% | Triangles: {interpolatedTriangles.length} | Mode:{' '}
-        {animation}
-      </div>
     </div>
   )
 }
