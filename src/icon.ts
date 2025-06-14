@@ -9,7 +9,7 @@ export interface IconSvgImageInput {
 
 export async function createIconSvgImage(
   input: IconSvgImageInput,
-  dep: Pick<DependencyInterface, 'logger' | 'markDefaults'>,
+  dep: Pick<DependencyInterface, 'markDefaults'>,
 ): Promise<SvgImage> {
   const mark = await createMarkSvgImage({ seed: input.seed, width: input.width, height: input.height }, dep)
   return {

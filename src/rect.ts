@@ -12,7 +12,7 @@ export interface RectSvgImageInput {
 
 export async function createRectSvgImage(
   input: RectSvgImageInput,
-  dep: Pick<DependencyInterface, 'logger' | 'markDefaults' | 'logoTextDefaults'>,
+  dep: Pick<DependencyInterface, 'markDefaults' | 'logoTextDefaults'>,
 ): Promise<SvgImage> {
   // Text
   const textSvg = await textToSvg({

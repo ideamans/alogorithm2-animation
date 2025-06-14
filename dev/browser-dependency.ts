@@ -19,8 +19,6 @@ export class BrowserDependency implements Pick<DependencyInterface, 'defaults' |
   constructor() {
     this.defaults = {
       seed: 'alogorithm2',
-      serverPort: 3000,
-      serverHost: '0.0.0.0',
     }
 
     this.logoTextDefaults = {

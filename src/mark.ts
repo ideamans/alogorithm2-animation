@@ -13,7 +13,7 @@ export interface LogoSpec {
 
 export async function createMarkSvgImage(
   spec: LogoSpec,
-  dep: Pick<DependencyInterface, 'logger' | 'markDefaults'>,
+  dep: Pick<DependencyInterface, 'markDefaults'>,
 ): Promise<SvgImage> {
   const seed = dep.markDefaults.seedPrefix + spec.seed
 

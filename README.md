@@ -1,53 +1,158 @@
-# アイデアマンズ ロゴマーク自動生成 v2
+# Alogorithm2 Animation
 
-[アイデアマンズ株式会社](https://www.ideamans.com/)のロゴマークを自動生成するWebアプリケーションです。
+A browser-focused animation library providing morphing triangular patterns and organic blob shapes. Create beautiful, animated logo marks with customizable transitions for React, Vue, and Astro applications.
 
-ロゴマークは、`seed`パラメータとして渡した値に応じてランダムに変化します。
+## Features
 
-アイデアマンズ株式会社は、プログラミング技術による価値の創造を最大の強みとする企業です。そのコーポレートアイデンティティを表現するには、ロゴマークがプログラミングで作られるべきという考えに至りました。
+- 🎨 **Morphing Animations** - Smooth transitions between randomly generated triangle patterns
+- 🌊 **Organic Blob Shapes** - Natural-looking blob masks that evolve over time
+- ⚡ **Framework Support** - Native components for React, Vue, and Astro
+- 🎯 **Two Animation Modes** - Choose between "morph" (crossfade) or "fly" (movement) transitions
+- 🎛️ **Fully Customizable** - Control size, timing, colors, and animation behavior
+- 📦 **Lightweight** - Minimal dependencies, optimized for browsers
 
-## ロゴマークのタイプ
+## Installation
 
-### インラインタイプ
+```bash
+npm install alogorithm2-animation
+# or
+yarn add alogorithm2-animation
+```
 
-マークの横に社名が表示される横長タイプです。
+## Usage
 
-![inline](./README/inline.png)
+### React
 
-- エントリーポイント
-  - `/v2/inline.svg` または `/v2/inline.png`
-- パラメータ
-  - `seed` マークのパターンを決めるランダムシード文字列です。デフォルト値は`alogorithm2`です。
-  - `width` マークの幅です。デフォルト値は`512`です。高さは社名の長さに応じて決まります。
-  - `colorTheme` 適応させるカラーテーマです。`light`または`dark`を指定できます。デフォルトは`light`です。
+```jsx
+import { Alogorithm2Animation } from 'alogorithm2-animation/react'
 
-### 矩形タイプ
+function App() {
+  return (
+    <Alogorithm2Animation 
+      width={400} 
+      height={400} 
+      mode="morph"
+      seed="my-seed"
+      duration={2000}
+      interval={4000}
+    />
+  )
+}
+```
 
-マークの下に社名が表示される矩形タイプです。正方形やOGP画像に利用します。
+### Vue
 
-![rect](./README/rect.png)
+```vue
+<template>
+  <Alogorithm2Animation 
+    :width="400" 
+    :height="400" 
+    mode="morph"
+    seed="my-seed"
+    :duration="2000"
+    :interval="4000"
+  />
+</template>
 
-- エントリーポイント
-  - `/v2/rect.svg` または `/v2/rect.png`
-- パラメータ
-  - `seed` マークのパターンを決めるランダムシード文字列です。デフォルト値は`alogorithm2`です。
-  - `width` マークの幅です。デフォルト値は`512`です。
-  - `height` マークの高さです。デフォルト値は`width`を参照します。
-  - `colorTheme` 適応させるカラーテーマです。`light`または`dark`を指定できます。デフォルトは`light`です。
+<script>
+import Alogorithm2Animation from 'alogorithm2-animation/vue'
 
-### アイコンタイプ
+export default {
+  components: {
+    Alogorithm2Animation
+  }
+}
+</script>
+```
 
-マークだけが表示されるタイプです。主にFaviconに使用します。以下のパラメータを指定できます。
+### Astro
 
-![icon](./README/icon.png)
+```astro
+---
+import Alogorithm2Animation from 'alogorithm2-animation/astro'
+---
 
-- エントリーポイント
-  - `/v2/icon.svg` または `/v2/icon.png`
-- パラメータ
-  - `seed` マークのパターンを決めるランダムシード文字列です。デフォルト値は`alogorithm2`です。
-  - `width` マークの幅です。デフォルト値は`64`です。
-  - `height` マークの高さです。デフォルト値は`width`を参照します。
+<Alogorithm2Animation 
+  client:load
+  width={400} 
+  height={400} 
+  mode="morph"
+  seed="my-seed"
+  duration={2000}
+  interval={4000}
+/>
+```
 
-## パターン生成
+## Props
 
-[trianglify](https://www.npmjs.com/package/trianglify)で幾何学パターンを生成し、[blobs](https://www.npmjs.com/package/blobs)でそれをクリッピングしています。
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `width` | number | 400 | Width of the animation canvas |
+| `height` | number | 400 | Height of the animation canvas |
+| `seed` | string | random | Seed for initial pattern generation |
+| `mode` | 'morph' \| 'fly' | 'morph' | Animation transition style |
+| `duration` | number | 2000 | Animation duration in milliseconds |
+| `interval` | number | 4000 | Pause between animations in milliseconds |
+
+### Animation Modes
+
+- **morph**: Triangles crossfade between patterns with smooth opacity transitions
+- **fly**: Triangles move from their positions with physics-based animations
+
+## Core Utilities
+
+You can also use the core animation utilities directly:
+
+```javascript
+import { 
+  generateTriangles,
+  generateBlobPath,
+  easeInOutSine,
+  interpolateColor
+} from 'alogorithm2-animation'
+
+// Generate triangle pattern
+const triangles = generateTriangles(seed, size, 'morph')
+
+// Generate blob path
+const blobPath = generateBlobPath(seed, size)
+```
+
+## Development
+
+```bash
+# Install dependencies
+yarn install
+
+# Run React development environment
+yarn dev:react
+
+# Run Vue development environment
+yarn dev:vue
+
+# Run Astro development environment
+yarn dev:astro
+
+# Run tests
+yarn test:react
+yarn test:vue
+
+# Build for production
+yarn build
+```
+
+## Browser Support
+
+This library requires modern browsers with support for:
+- SVG animations
+- ES6+ JavaScript features
+- CSS custom properties
+- requestAnimationFrame API
+
+## License
+
+GPL-3.0 License
+
+## Credits
+
+Created by ideaman's Inc. Based on the Alogorithm v2 visual identity system.
