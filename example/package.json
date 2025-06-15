@@ -4,12 +4,12 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "dev:react": "vite --config react/vite.config.mjs",
-    "dev:vue": "vite --config vue/vite.config.mjs", 
-    "dev:astro": "astro dev --root astro"
+    "dev:react": "cd react && vite",
+    "dev:vue": "cd vue && vite", 
+    "dev:astro": "cd astro && astro dev"
   },
   "dependencies": {
-    "alogorithm2-animation": "file:../dist",
+    "alogorithm2-animation": "file:../",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "vue": "^3.5.16"

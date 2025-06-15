@@ -48,4 +48,12 @@ if (existsSync(astroScriptSource)) {
   console.log('Astro AnimationScript will be compiled by TypeScript');
 }
 
+// Copy dist-specific package.json to dist
+const packageSource = join(rootDir, 'scripts/dist-package.json');
+const packageDest = join(rootDir, 'dist/package.json');
+if (existsSync(packageSource)) {
+  copyFileSync(packageSource, packageDest);
+  console.log('Copied dist-specific package.json');
+}
+
 console.log('File copying completed');

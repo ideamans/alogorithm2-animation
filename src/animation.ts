@@ -1,7 +1,7 @@
 import Blobs2 from 'blobs/v2/index.js'
 import Trianglify from 'trianglify-ts-no-canvas'
 
-import { scaleSvgPath } from './svg'
+import { scaleSvgPath } from './svg.js'
 
 export interface AnimationOptions {
   width: number
