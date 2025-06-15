@@ -1,0 +1,45 @@
+{
+  "name": "alogorithm2-animation",
+  "description": "Animated logo mark generator with morphing triangles and blobs",
+  "version": "2.2.1",
+  "type": "module",
+  "main": "index.js",
+  "module": "index.js",
+  "types": "index.d.ts",
+  "license": "GPL-3.0",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./index.js"
+    },
+    "./react": {
+      "types": "./react/index.d.ts",
+      "import": "./react/index.js"
+    },
+    "./vue": "./vue/index.vue",
+    "./astro": {
+      "types": "./astro/index.d.ts",
+      "import": "./astro/index.js"
+    }
+  },
+  "peerDependencies": {
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0",
+    "vue": ">=3.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    },
+    "vue": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "blobs": "^2.3.0-beta.2",
+    "trianglify-ts-no-canvas": "^4.2.0"
+  }
+}

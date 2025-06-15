@@ -139,6 +139,8 @@ yarn test:vue
 
 # Build for production
 yarn build
+
+# Note: E2E testing is currently on hold
 ```
 
 ## Browser Support

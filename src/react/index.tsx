@@ -13,7 +13,7 @@ import {
   MorphState,
   Point,
   Triangle,
-} from '../animation'
+} from '../animation.js'
 
 export interface Alogorithm2AnimationProps {
   width?: number
