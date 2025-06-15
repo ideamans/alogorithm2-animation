@@ -216,12 +216,12 @@ export function generateTriangles(seed: string, size: number, animationMode: 'fl
   if (pattern.polys && pattern.polys.length > 0) {
     // Get points array for vertex lookup
     const points = pattern.points || []
-    
+
     pattern.polys.forEach((poly) => {
       if (poly.vertexIndices && poly.vertexIndices.length === 3) {
-        const trianglePoints = poly.vertexIndices.map(idx => ({
+        const trianglePoints = poly.vertexIndices.map((idx) => ({
           x: points[idx][0],
-          y: points[idx][1]
+          y: points[idx][1],
         }))
 
         const centroid = poly.centroid || {
@@ -240,10 +240,10 @@ export function generateTriangles(seed: string, size: number, animationMode: 'fl
           }
         }
 
-        triangles.push({ 
-          points: trianglePoints, 
-          color: convertRGBtoHSL(color), 
-          centroid 
+        triangles.push({
+          points: trianglePoints,
+          color: convertRGBtoHSL(color),
+          centroid,
         })
       }
     })
