@@ -1,0 +1,24 @@
+{
+  "name": "alogorithm2-animation-examples",
+  "version": "1.0.0",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "dev:react": "vite --config react/vite.config.mjs",
+    "dev:vue": "vite --config vue/vite.config.mjs", 
+    "dev:astro": "astro dev --root astro"
+  },
+  "dependencies": {
+    "alogorithm2-animation": "file:../dist",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "vue": "^3.5.16"
+  },
+  "devDependencies": {
+    "@astrojs/react": "^4.3.0",
+    "@vitejs/plugin-react": "^4.5.2",
+    "@vitejs/plugin-vue": "^5.2.4",
+    "astro": "^5.9.3",
+    "vite": "^6.3.5"
+  }
+}
